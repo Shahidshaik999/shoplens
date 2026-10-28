@@ -11,7 +11,7 @@ import UserPhotoUpload from "@/components/UserPhotoUpload";
 import TryOnButton from "@/components/TryOnButton";
 import HistoryPanel from "@/components/HistoryPanel";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://shoplens-2.onrender.com";
 
 export type TryOnResult = {
   result_image_base64: string;
