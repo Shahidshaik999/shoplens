@@ -72,7 +72,7 @@ class MetaClient:
                             "type": "text",
                             "text": (
                                 'Return this exact JSON structure:\n'
-                                '{"product_name":"...","category":"clothing|shoes|glasses|accessories|furniture|bag|watch|jewelry","description":"detailed visual description of colors style material design","try_on_type":"wear_on_person|place_in_room","placement":"upper body|feet|face|wrist|neck|living room|bedroom"}'
+                                '{"product_name":"...","category":"clothing|shoes|glasses|accessories|furniture|bag|watch|jewelry","description":"detailed visual description of colors style material design","try_on_type":"wear_on_person|place_in_room","placement":"upper body|lower body|feet|face|wrist|neck|living room|bedroom"}'
                             ),
                         },
                     ],
@@ -155,17 +155,37 @@ class MetaClient:
         placement = product_info.get("placement", "")
         category = product_info.get("category", "clothing")
 
+        # Bottom-wear needs full body view to show the product properly
+        bottom_categories = {"pants", "jeans", "trousers", "shorts", "skirt", "leggings"}
+        is_bottom = (
+            category.lower() in bottom_categories
+            or any(w in product_name.lower() for w in ["pant", "jean", "trouser", "short", "skirt", "legging", "chino", "cargo"])
+            or placement.lower() in ("lower body", "legs", "waist", "hips")
+        )
+
         # Build prompt based on try-on type
         if user_type == "person":
-            prompt = (
-                f"Virtual try-on: show this exact person wearing the {product_name} "
-                f"from the second image. "
-                f"Product description: {product_desc}. "
-                f"Place it on their {placement}. "
-                f"Keep the person's face, skin, hair, and background EXACTLY the same. "
-                f"Only change the {category} area to show the product. "
-                f"Photorealistic result. Natural lighting."
-            )
+            if is_bottom:
+                prompt = (
+                    f"Virtual try-on for bottom wear: show this exact person wearing the {product_name} "
+                    f"from the second image. "
+                    f"Product description: {product_desc}. "
+                    f"IMPORTANT: Show the FULL BODY from head to toe — face, torso, legs, and feet must all be visible. "
+                    f"Do NOT crop at the waist. The entire lower body including legs must be shown clearly. "
+                    f"Keep the person's face, skin, hair, and upper body EXACTLY the same. "
+                    f"Only replace the bottom clothing with the {product_name}. "
+                    f"Photorealistic. Natural lighting. Full body framing."
+                )
+            else:
+                prompt = (
+                    f"Virtual try-on: show this exact person wearing the {product_name} "
+                    f"from the second image. "
+                    f"Product description: {product_desc}. "
+                    f"Place it on their {placement}. "
+                    f"Keep the person's face, skin, hair, and background EXACTLY the same. "
+                    f"Only change the {category} area to show the product. "
+                    f"Photorealistic result. Natural lighting."
+                )
         else:
             prompt = (
                 f"Interior visualization: place the {product_name} "
