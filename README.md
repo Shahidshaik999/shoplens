@@ -97,17 +97,6 @@ App runs at `http://localhost:3000`
 
 ---
 
-## Why This Wins
-
-| Criterion | Score | Reason |
-|---|---|---|
-| Impact 30% | 29/30 | 130M+ Instagram shoppers, 70% return rate, $500B ecommerce problem |
-| Meta AI tooling 25% | 25/25 | SAM 3.1 + Muse Image + Muse Spark — full Meta model stack |
-| Technical depth 20% | 20/20 | Vision analysis + image generation pipeline |
-| Demo 25% | 25/25 | Live try-on in 5 seconds, judges can try it on their own photo |
-
----
-
 ## The Pitch
 
 *"See any Instagram product on yourself before buying. One tap. Five seconds. No more returns."*
